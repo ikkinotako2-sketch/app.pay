@@ -1,41 +1,30 @@
-rm -f app.py
-cat > app.py << 'EOF'
+rm -f app.py && cat > app.py << 'EOF'
 import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-st.set_page_config(page_title="AI Note Studio", layout="wide", initial_sidebar_state="expanded")
+st.set_page_config(page_title="AI Note Studio", layout="wide")
 
 st.title("🌌 AI Note Studio")
-st.markdown("**3Dのような没入感を追求した note 支援ツール**")
+st.markdown("**没入感を重視した note 自動記事生成ツール**")
 
-page = st.sidebar.radio("メニューを選択", ["記事生成", "作家分析", "人気傾向"])
+page = st.sidebar.radio("メニュー", ["記事生成", "作家分析"])
 
 if page == "記事生成":
-    st.subheader("✍️ 記事生成")
-    topic = st.text_input("トピックを入力してください", "現役大学生の副業")
-    if st.button("🚀 記事を生成", type="primary"):
-        with st.spinner("深みのある物語を生成中..."):
-            st.success("生成完了！")
-            st.markdown(f"### {topic}")
-            st.write("ここに視点移動を意識した美しい文章が表示されます。体験談や失敗談も自動で入ります。")
+    st.subheader("記事生成")
+    topic = st.text_input("トピック", "現役大学生の副業")
+    if st.button("生成", type="primary"):
+        st.success("生成完了！（サンプル）")
+        st.markdown(f"**{topic}** の記事がここに表示されます。")
 
 elif page == "作家分析":
-    st.subheader("📊 note作家分析")
-    username = st.text_input("noteユーザー名を入力", "@example")
-    if st.button("分析する"):
-        st.info("サンプル分析結果")
-        df = pd.DataFrame({
-            "記事": ["副業1", "副業2", "失敗談"],
-            "スキ": [320, 980, 450]
-        })
-        fig = px.bar(df, x="記事", y="スキ", title="記事別スキ数")
-        st.plotly_chart(fig, use_container_width=True)
+    st.subheader("作家分析")
+    username = st.text_input("ユーザー名", "@example")
+    if st.button("分析"):
+        df = pd.DataFrame({"記事": ["A", "B"], "スキ": [500, 1200]})
+        fig = px.bar(df, x="記事", y="スキ")
+        st.plotly_chart(fig)
 
-elif page == "人気傾向":
-    st.subheader("🔥 note人気傾向")
-    st.write("現在、副業のリアル体験談が人気です。")
-
-st.caption("AI Note Studio - シンプルかつ没入感のある体験を目指して")
+st.caption("3D没入感UIを目指したアプリ")
 EOF
 streamlit run app.py
