@@ -1,47 +1,41 @@
-# 1. シンプルに現在のフォルダを使う
-cat > requirements.txt << EOF
-streamlit
-pandas
-plotly
-requests
-pillow
-EOF
+rm -f app.py
 cat > app.py << 'EOF'
 import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-st.set_page_config(page_title="AI Note Studio", layout="wide")
+st.set_page_config(page_title="AI Note Studio", layout="wide", initial_sidebar_state="expanded")
 
 st.title("🌌 AI Note Studio")
-st.markdown("**3D没入感を追求した note 記事生成ツール**")
+st.markdown("**3Dのような没入感を追求した note 支援ツール**")
 
-page = st.sidebar.radio("メニュー", ["記事生成", "作家分析", "人気傾向"])
+page = st.sidebar.radio("メニューを選択", ["記事生成", "作家分析", "人気傾向"])
 
 if page == "記事生成":
-    st.subheader("キーワードから記事を生成")
-    topic = st.text_input("トピック", "現役大学生の副業")
-    if st.button("🚀 生成する", type="primary"):
-        with st.spinner("没入感のある文章を生成中..."):
+    st.subheader("✍️ 記事生成")
+    topic = st.text_input("トピックを入力してください", "現役大学生の副業")
+    if st.button("🚀 記事を生成", type="primary"):
+        with st.spinner("深みのある物語を生成中..."):
             st.success("生成完了！")
-            st.markdown(f"### {topic} - 生成例")
-            st.write("視点がゆっくり動き、物語が深く展開するような記事がここに表示されます。")
+            st.markdown(f"### {topic}")
+            st.write("ここに視点移動を意識した美しい文章が表示されます。体験談や失敗談も自動で入ります。")
 
 elif page == "作家分析":
-    st.subheader("note作家分析")
-    username = st.text_input("ユーザー名", "@example_user")
-    if st.button("分析開始"):
+    st.subheader("📊 note作家分析")
+    username = st.text_input("noteユーザー名を入力", "@example")
+    if st.button("分析する"):
+        st.info("サンプル分析結果")
         df = pd.DataFrame({
-            "記事": ["副業体験", "失敗談", "成功ノウハウ"],
-            "スキ数": [450, 820, 1250]
+            "記事": ["副業1", "副業2", "失敗談"],
+            "スキ": [320, 980, 450]
         })
-        fig = px.bar(df, x="記事", y="スキ数", title="人気記事ランキング")
+        fig = px.bar(df, x="記事", y="スキ", title="記事別スキ数")
         st.plotly_chart(fig, use_container_width=True)
 
-else:
-    st.subheader("note人気傾向")
-    st.info("副業のリアル体験談が現在強いです。")
+elif page == "人気傾向":
+    st.subheader("🔥 note人気傾向")
+    st.write("現在、副業のリアル体験談が人気です。")
 
-st.caption("Made with ❤️ for immersive note creation")
+st.caption("AI Note Studio - シンプルかつ没入感のある体験を目指して")
 EOF
 streamlit run app.py
